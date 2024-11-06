@@ -733,16 +733,16 @@
             </button>
         </div>
         <style>
-          .button-6 {
-    touch-action: none;
+.draggable-button {
     position: relative;
-    transition: transform 0.2s;
+    touch-action: none; /* لمنع التمرير أثناء السحب */
 }
 
 .dragging {
-    opacity: 0.6;
+    opacity: 0.5;
     pointer-events: none;
 }
+
 
         </style>
         <audio id="audio-player" preload="auto"></audio>
@@ -750,16 +750,16 @@
             <div class="images img2">
                 <img src="./Images/cat.png" alt="">
             </div>
-            <button draggable="true" data-sound="./lib/getting2.mp3"  class="button-6 btn6 wrong ww6 correct cc6 Getting" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/getting2.mp3"  class="draggable-button button-6 btn6 wrong ww6 correct cc6 Getting" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Getting</span>
             </button>
-            <button draggable="true" data-sound="./lib/here.mp3" class="button-6 btn6 wrong ww6 correct cc6  here" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/here.mp3" class="draggable-button button-6 btn6 wrong ww6 correct cc6  here" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Here</span>
             </button>
-            <button draggable="true" data-sound="./lib/cooler.mp3" class="button-6 btn6 wrong ww6 correct cc6  cooler," role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/cooler.mp3" class="draggable-button button-6 btn6 wrong ww6 correct cc6  cooler," role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Cooler,</span>
             </button>
-            <button draggable="true" data-sound="./lib/winters.mp3" class="button-6 btn6 wrong ww6 correct cc6 winter's" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/winters.mp3" class="draggable-button button-6 btn6 wrong ww6 correct cc6 winter's" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Winter's</span>
             </button>
          
@@ -3205,35 +3205,42 @@ DropElement1.forEach((DropIn) => {
    </script>
 
    <script>
-    document.querySelectorAll('.button-6').forEach(button => {
-    button.addEventListener('touchstart', handleTouchStart);
-    button.addEventListener('touchmove', handleTouchMove);
+  let activeElement = null;
+let offsetX = 0;
+let offsetY = 0;
+
+// إضافة الأحداث الأساسية للسحب
+document.querySelectorAll('.draggable-button').forEach(button => {
+    button.addEventListener('touchstart', handleTouchStart, { passive: false });
+    button.addEventListener('touchmove', handleTouchMove, { passive: false });
     button.addEventListener('touchend', handleTouchEnd);
 });
-
-let activeElement = null;
 
 function handleTouchStart(e) {
     e.preventDefault();
     activeElement = e.target;
     activeElement.classList.add('dragging');
+
+    // الحصول على موقع البداية للسحب
+    const rect = activeElement.getBoundingClientRect();
+    offsetX = e.touches[0].clientX - rect.left;
+    offsetY = e.touches[0].clientY - rect.top;
 }
 
 function handleTouchMove(e) {
     e.preventDefault();
+    if (!activeElement) return;
+
     const touch = e.touches[0];
-    if (activeElement) {
-        activeElement.style.position = 'absolute';
-        activeElement.style.left = `${touch.pageX - (activeElement.offsetWidth / 2)}px`;
-        activeElement.style.top = `${touch.pageY - (activeElement.offsetHeight / 2)}px`;
-    }
+    activeElement.style.position = 'absolute';
+    activeElement.style.left = `${touch.clientX - offsetX}px`;
+    activeElement.style.top = `${touch.clientY - offsetY}px`;
 }
 
 function handleTouchEnd(e) {
     e.preventDefault();
     if (activeElement) {
         activeElement.classList.remove('dragging');
-        activeElement.style.position = ''; // إعادة الوضع الافتراضي بعد السحب
         activeElement = null;
     }
 }
@@ -3242,6 +3249,7 @@ function playButtonSound(element) {
     const sound = new Audio(element.getAttribute("data-sound"));
     sound.play();
 }
+
 
    </script>
 
