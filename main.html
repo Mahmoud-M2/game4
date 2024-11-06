@@ -273,7 +273,7 @@
     flex-wrap: wrap;
     width: 100%;
     margin: auto;
-    height: 260px;
+    /* height: 260px; */
     align-content: center;
     align-items: center;
     justify-content: center;
@@ -591,7 +591,7 @@
     }
 
     .img2 {
-      bottom: -90%;
+      bottom: -200%;
       left:25%;
   }
   }
@@ -607,11 +607,7 @@
       
       /* font-size: clamp(2em, 5.5vw, 3.2em); */
   }
-
-         .draggable {
-    position: absolute;
-    cursor: grab;
-}
+  
      </style>
 </head>
 
@@ -740,16 +736,16 @@
             <div class="images img2">
                 <img src="./Images/cat.png" alt="">
             </div>
-            <button draggable="true" data-sound="./lib/getting2.mp3"  class="draggable button-6 btn6 wrong ww6 correct cc6 Getting" role="button">
+            <button draggable="true" data-sound="./lib/getting2.mp3"  class="button-6 btn6 wrong ww6 correct cc6 Getting" role="button" >
                 <span class="text">Getting</span>
             </button>
-            <button draggable="true" data-sound="./lib/here.mp3" class="draggable button-6 btn6 wrong ww6 correct cc6  here" role="button" >
+            <button draggable="true" data-sound="./lib/here.mp3" class="button-6 btn6 wrong ww6 correct cc6  here" role="button" >
                 <span class="text">Here</span>
             </button>
-            <button draggable="true" data-sound="./lib/cooler.mp3" class="draggable button-6 btn6 wrong ww6 correct cc6  cooler," role="button">
+            <button draggable="true" data-sound="./lib/cooler.mp3" class="button-6 btn6 wrong ww6 correct cc6  cooler," role="button" >
                 <span class="text">Cooler,</span>
             </button>
-            <button draggable="true" data-sound="./lib/winters.mp3" class="draggable button-6 btn6 wrong ww6 correct cc6 winter's" role="button">
+            <button draggable="true" data-sound="./lib/winters.mp3" class="button-6 btn6 wrong ww6 correct cc6 winter's" role="button" >
                 <span class="text">Winter's</span>
             </button>
          
@@ -1458,7 +1454,7 @@ DropElement.forEach((element, index) => {
                           Drop1[i].style.color = "white";
                           Drop1[i].textContent = " ";
                         }
-                        Quest6.style.setProperty("top", "25%");
+                        Quest6.style.setProperty("top", "50%");
                       }, 900);
                     }, 8000);
                     force = 0;
@@ -1659,7 +1655,7 @@ DropElement.forEach((element, index) => {
                       voice = 0;
                       sayquestion(qon(), 2000, 1800);
                       setTimeout(function () {
-                        Quest7.style.setProperty("top", "25%");
+                        Quest7.style.setProperty("top", "50%");
                         for (let i = 0; i < 4; i++) {
                           mainqo1[i].style.setProperty("display", "block");
                         }
@@ -1797,7 +1793,7 @@ DropElement.forEach((element, index) => {
                       voice = 0;
                       sayquestion(qon(), 2000, 2000);
                       setTimeout(function () {
-                        Quest8.style.setProperty("top", "25%");
+                        Quest8.style.setProperty("top", "50%");
                         for (let i = 0; i < 5; i++) {
                           mainqo1[i].style.setProperty("display", "block");
                         }
@@ -3192,46 +3188,6 @@ DropElement1.forEach((DropIn) => {
     audioPlayer.src = soundFile;
     audioPlayer.play();
 }
-
-       document.querySelectorAll('.draggable').forEach(button => {
-    button.addEventListener('mousedown', startDrag);
-    button.addEventListener('touchstart', startDrag);
-
-    function startDrag(event) {
-        event.preventDefault();
-        const element = event.target;
-        
-        // الحصول على إحداثيات البداية
-        let startX = event.type.includes('touch') ? event.touches[0].clientX : event.clientX;
-        let startY = event.type.includes('touch') ? event.touches[0].clientY : event.clientY;
-
-        // حساب موضع العنصر
-        let offsetX = startX - element.getBoundingClientRect().left;
-        let offsetY = startY - element.getBoundingClientRect().top;
-
-        // وظائف للتحريك
-        function dragMove(e) {
-            let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            element.style.left = `${clientX - offsetX}px`;
-            element.style.top = `${clientY - offsetY}px`;
-        }
-
-        // إنهاء السحب
-        function stopDrag() {
-            document.removeEventListener('mousemove', dragMove);
-            document.removeEventListener('mouseup', stopDrag);
-            document.removeEventListener('touchmove', dragMove);
-            document.removeEventListener('touchend', stopDrag);
-        }
-
-        // إضافة المستمعين للأحداث
-        document.addEventListener('mousemove', dragMove);
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchmove', dragMove);
-        document.addEventListener('touchend', stopDrag);
-    }
-});
    </script>
 
 </body>
