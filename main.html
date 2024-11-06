@@ -732,21 +732,34 @@
                 <span class="text">Home</span>
             </button>
         </div>
+        <style>
+          .button-6 {
+    touch-action: none;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.dragging {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+        </style>
         <audio id="audio-player" preload="auto"></audio>
         <div class="quest6">
             <div class="images img2">
                 <img src="./Images/cat.png" alt="">
             </div>
-            <button draggable="true" data-sound="./lib/getting2.mp3"  class="button-6 btn6 wrong ww6 correct cc6 Getting" role="button" >
+            <button draggable="true" data-sound="./lib/getting2.mp3"  class="button-6 btn6 wrong ww6 correct cc6 Getting" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Getting</span>
             </button>
-            <button draggable="true" data-sound="./lib/here.mp3" class="button-6 btn6 wrong ww6 correct cc6  here" role="button" >
+            <button draggable="true" data-sound="./lib/here.mp3" class="button-6 btn6 wrong ww6 correct cc6  here" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Here</span>
             </button>
-            <button draggable="true" data-sound="./lib/cooler.mp3" class="button-6 btn6 wrong ww6 correct cc6  cooler," role="button" >
+            <button draggable="true" data-sound="./lib/cooler.mp3" class="button-6 btn6 wrong ww6 correct cc6  cooler," role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Cooler,</span>
             </button>
-            <button draggable="true" data-sound="./lib/winters.mp3" class="button-6 btn6 wrong ww6 correct cc6 winter's" role="button" >
+            <button draggable="true" data-sound="./lib/winters.mp3" class="button-6 btn6 wrong ww6 correct cc6 winter's" role="button" onclick="playButtonSound(this)"  ontouchstart="playButtonSound(this)">
                 <span class="text">Winter's</span>
             </button>
          
@@ -3189,6 +3202,47 @@ DropElement1.forEach((DropIn) => {
     audioPlayer.src = soundFile;
     audioPlayer.play();
 }
+   </script>
+
+   <script>
+    document.querySelectorAll('.button-6').forEach(button => {
+    button.addEventListener('touchstart', handleTouchStart);
+    button.addEventListener('touchmove', handleTouchMove);
+    button.addEventListener('touchend', handleTouchEnd);
+});
+
+let activeElement = null;
+
+function handleTouchStart(e) {
+    e.preventDefault();
+    activeElement = e.target;
+    activeElement.classList.add('dragging');
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (activeElement) {
+        activeElement.style.position = 'absolute';
+        activeElement.style.left = `${touch.pageX - (activeElement.offsetWidth / 2)}px`;
+        activeElement.style.top = `${touch.pageY - (activeElement.offsetHeight / 2)}px`;
+    }
+}
+
+function handleTouchEnd(e) {
+    e.preventDefault();
+    if (activeElement) {
+        activeElement.classList.remove('dragging');
+        activeElement.style.position = ''; // إعادة الوضع الافتراضي بعد السحب
+        activeElement = null;
+    }
+}
+
+function playButtonSound(element) {
+    const sound = new Audio(element.getAttribute("data-sound"));
+    sound.play();
+}
+
    </script>
 
 </body>
