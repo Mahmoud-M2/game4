@@ -607,7 +607,11 @@
       
       /* font-size: clamp(2em, 5.5vw, 3.2em); */
   }
-  
+
+         .draggable {
+    position: absolute;
+    cursor: grab;
+}
      </style>
 </head>
 
@@ -736,16 +740,16 @@
             <div class="images img2">
                 <img src="./Images/cat.png" alt="">
             </div>
-            <button draggable="true" data-sound="./lib/getting2.mp3"  class="button-6 btn6 wrong ww6 correct cc6 Getting" role="button"   ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/getting2.mp3"  class="draggable button-6 btn6 wrong ww6 correct cc6 Getting" role="button"   ontouchstart="playButtonSound(this)">
                 <span class="text">Getting</span>
             </button>
-            <button draggable="true" data-sound="./lib/here.mp3" class="button-6 btn6 wrong ww6 correct cc6  here" role="button"   ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/here.mp3" class="draggable button-6 btn6 wrong ww6 correct cc6  here" role="button"   ontouchstart="playButtonSound(this)">
                 <span class="text">Here</span>
             </button>
-            <button draggable="true" data-sound="./lib/cooler.mp3" class="button-6 btn6 wrong ww6 correct cc6  cooler," role="button"  ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/cooler.mp3" class="draggable button-6 btn6 wrong ww6 correct cc6  cooler," role="button"  ontouchstart="playButtonSound(this)">
                 <span class="text">Cooler,</span>
             </button>
-            <button draggable="true" data-sound="./lib/winters.mp3" class="button-6 btn6 wrong ww6 correct cc6 winter's" role="button"   ontouchstart="playButtonSound(this)">
+            <button draggable="true" data-sound="./lib/winters.mp3" class="draggable button-6 btn6 wrong ww6 correct cc6 winter's" role="button"   ontouchstart="playButtonSound(this)">
                 <span class="text">Winter's</span>
             </button>
          
@@ -3188,6 +3192,46 @@ DropElement1.forEach((DropIn) => {
     audioPlayer.src = soundFile;
     audioPlayer.play();
 }
+
+       document.querySelectorAll('.draggable').forEach(button => {
+    button.addEventListener('mousedown', startDrag);
+    button.addEventListener('touchstart', startDrag);
+
+    function startDrag(event) {
+        event.preventDefault();
+        const element = event.target;
+        
+        // الحصول على إحداثيات البداية
+        let startX = event.type.includes('touch') ? event.touches[0].clientX : event.clientX;
+        let startY = event.type.includes('touch') ? event.touches[0].clientY : event.clientY;
+
+        // حساب موضع العنصر
+        let offsetX = startX - element.getBoundingClientRect().left;
+        let offsetY = startY - element.getBoundingClientRect().top;
+
+        // وظائف للتحريك
+        function dragMove(e) {
+            let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            element.style.left = `${clientX - offsetX}px`;
+            element.style.top = `${clientY - offsetY}px`;
+        }
+
+        // إنهاء السحب
+        function stopDrag() {
+            document.removeEventListener('mousemove', dragMove);
+            document.removeEventListener('mouseup', stopDrag);
+            document.removeEventListener('touchmove', dragMove);
+            document.removeEventListener('touchend', stopDrag);
+        }
+
+        // إضافة المستمعين للأحداث
+        document.addEventListener('mousemove', dragMove);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchmove', dragMove);
+        document.addEventListener('touchend', stopDrag);
+    }
+});
    </script>
 
 </body>
